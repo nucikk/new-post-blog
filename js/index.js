@@ -15,7 +15,7 @@ const changeLang = () => {
     generateLangs();
 }
 
-// ფუნქცია ენების შეცვლის
+// ენების შეცვლის ფუნქცია
 function generateLangs() {
     let lang = checkLang();
     let addNewEntry = document.getElementById("addNewEntry");
@@ -31,6 +31,13 @@ function generateLangs() {
     changeLang.innerText = lang;
 
 }
+
+const addNewEntry = () => {
+    let newEntryModal = document.getElementById("newEntryModal");   
+     document.body.classList.add("modal-open");
+    newEntryModal.style.display = "flex";
+}
+
 
 //REVIEW -  ელემენტებზე ტექსტის მინიჭების ფუნქცია
 

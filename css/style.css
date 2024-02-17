@@ -13,10 +13,17 @@ header {
     justify-content: flex-end;
 }
 
+.modal-open {
+    overflow: hidden;
+    background-color: #00405217;
+
+}
+
 #addNewEntry,
-#changeLang {
+#changeLang,
+#submitNewEntry  {
     margin-right: 20px;
-    padding: 8px 20px;
+    padding: 10px 20px;
     background-color: #84ABE3;
     color: #fff;
     text-align: center;
@@ -45,9 +52,25 @@ header {
     margin: auto;
     width: 50%;
     height: 50%;
-    border: 1px solid #b19999;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
-#newEntryContent {}
+#newEntryContent,#newEntryTitle {
+    border-radius: 8px;
+    border: 2px solid #ce9ff7;
+    padding: 5px;
+    outline: none;
 
-#submitNewEntry {}
+}
+#newEntryTitle {
+    height: 50px;
+}
+
+#submitNewEntry {
+    margin-right: 0px;
+    border: none;
+}
