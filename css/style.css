@@ -42,6 +42,19 @@ header {
     border: 3px solid #B084E3;
 }
 
+.entry {
+margin: 10px;
+padding: 10px;
+border-radius: 10px;
+border: 1px solid #B084E3;
+
+}
+.entry-title {
+    color: darkorange;
+}
+.entry-content {
+    font-size: 20px;
+}
 #newEntryModal {
     display: none;
     position: absolute;
@@ -68,9 +81,24 @@ header {
 }
 #newEntryTitle {
     height: 50px;
+    margin-top: 30px;
 }
 
 #submitNewEntry {
     margin-right: 0px;
+    border: none;
+}
+
+#closeModal {
+    width: 40px;
+    height: 20px;
+    font-weight: bold;
+    position: absolute;
+    right: 10px; 
+    top: 10px;
+    cursor: pointer;
+    color: #ff0000;
+    font-size: 30px;
+    background-color: transparent;
     border: none;
 }

@@ -1,6 +1,7 @@
 // ამოწმებს არის თუ არა კონკრეტული key localStorage-ში
 const exists = (key) => {
     return localStorage.getItem(key) !== null;
+    
 }
 // ამოიღებს მოცემულ გასაღებთან დაკავშირებულ მნიშვნელობას localStorage-დან
 const getData = (key) => {

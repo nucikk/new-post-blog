@@ -15,8 +15,9 @@
 
     <!--  ჩანაწერის სექცია -->
     <section>
-      <div id="entries">
+      <div id="entries">   </div>
         <div id="newEntryModal">
+            <button id="closeModal" onclick="closeModal()">X</button>
           <input type="text" id="newEntryTitle" />
           <textarea
             id="newEntryContent"
@@ -26,7 +27,6 @@
           ></textarea>
 
           <button id="submitNewEntry" onclick="submitNewEntry()"></button>
-        </div>
       </div>
     </section>
     <script src="./js/storage.js"></script>
