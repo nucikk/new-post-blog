@@ -9,27 +9,28 @@
   <body>
     <!-- ჰედერ სექცია,ახალი ჩანაწერის დამატების ღილაკით -->
     <header>
-      <button id="addNewEntry" onclick="addNewEntry()">დამატება</button>
+      <button id="addNewEntry" onclick="addNewEntry()"></button>
+      <button id="changeLang" onclick="changeLang()"></button>
     </header>
 
     <!--  ჩანაწერის სექცია -->
     <section>
       <div id="entries">
         <div id="newEntryModal">
-          <input type="text" id="newEntryTitle" placeholder="Title" />
+          <input type="text" id="newEntryTitle" />
           <textarea
             id="newEntryContent"
             name="content"
             cols="30"
             rows="10"
-            placeholder="Content"
           ></textarea>
 
           <button id="submitNewEntry" onclick="submitNewEntry()"></button>
         </div>
       </div>
     </section>
-
+    <script src="./js/storage.js"></script>
+    <script src="./js/langs.js"></script>
     <script src="./js/index.js"></script>
   </body>
 </html>

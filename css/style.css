@@ -13,16 +13,19 @@ header {
     justify-content: flex-end;
 }
 
-#addNewEntry {
+#addNewEntry,
+#changeLang {
+    margin-right: 20px;
+    padding: 8px 20px;
     background-color: #84ABE3;
     color: #fff;
-    padding: 8px 20px;
-    margin: 0 40px;
     text-align: center;
-    width: 150px;
     font-size: 18px;
     border-radius: 10px;
+    cursor: pointer;
 }
+
+#addNewEntry {}
 
 #entries {
     margin: 10px auto;
