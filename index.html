@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>daily Blog</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <!-- ჰედერ სექცია,ახალი ჩანაწერის დამატების ღილაკით -->
+    <header>
+      <button id="addNewEntry" onclick="addNewEntry()">დამატება</button>
+    </header>
+
+    <!--  ჩანაწერის სექცია -->
+    <section>
+      <div id="entries">
+        <div id="newEntryModal">
+          <input type="text" id="newEntryTitle" placeholder="Title" />
+          <textarea
+            id="newEntryContent"
+            name="content"
+            cols="30"
+            rows="10"
+            placeholder="Content"
+          ></textarea>
+
+          <button id="submitNewEntry" onclick="submitNewEntry()"></button>
+        </div>
+      </div>
+    </section>
+
+    <script src="./js/index.js"></script>
+  </body>
+</html>
