@@ -2,10 +2,10 @@
 const checkLang = () => {
     let defaultLang = "ka";
     let currentLang = getData("lang");
-    if(!currentLang) {
+    if (!currentLang) {
         setData("lang", defaultLang);
         return "ka";
-    } 
+    }
     return currentLang;
 }
 
@@ -19,8 +19,8 @@ const changeLang = () => {
 
 //^REVIEW -  popupის გახსნა 
 const addNewEntry = () => {
-    let newEntryModal = document.getElementById("newEntryModal");   
-     document.body.classList.add("modal-open");
+    let newEntryModal = document.getElementById("newEntryModal");
+    document.body.classList.add("modal-open");
     newEntryModal.style.display = "flex";
 }
 //^REVIEW -  popupის დახურვა 
@@ -34,38 +34,75 @@ const closeModal = () => {
 const submitNewEntry = () => {
     let newEntryTitle = document.getElementById("newEntryTitle");
     let newEntryContent = document.getElementById("newEntryContent");
-    let entriesContainer = document.getElementById("entries"); 
-    
+    let entriesContainer = document.getElementById("entries");
+
     let data = {
         title: newEntryTitle.value,
         content: newEntryContent.value
-    }        
-    
-    let entries = getData("entries") || []; 
+    }
 
-     entries.push(data)
-     setData("entries", entries);     
+    let entries = getData("entries") || [];
 
-     processHTMLForEntry(data, entriesContainer);
+    entries.push(data)
+    setData("entries", entries);
 
-     newEntryTitle.value = "";
-     newEntryContent.value = "";
-     closeModal();
+    processHTMLForEntry(data, entriesContainer);
 
+    newEntryTitle.value = "";
+    newEntryContent.value = "";
+    closeModal();
+
+}
+
+// ფუნქცია ელემეტების ცვალებადი, ტიპის, კლასის და ატრიბუტის დამატება
+const processHTMLElement = (typeOf, className, params) => {
+    let HTMLelement = document.createElement(typeOf);
+    HTMLelement.classList.add(className);
+    if (params) {
+        if (params.innerText) {
+            HTMLelement.innerText = params.innerText;
+        } else if (params.src) {
+            HTMLelement.src = params.src;
+        }
+    }
+
+    return HTMLelement;
 }
 
 //^REVIEW -  დასამუშავებელი ფუნქცია ქმნის ელემენტებს და ჩასვამს სათანადო ტექსტს
 const processHTMLForEntry = (entry, entriesContainer) => {
-    let entryContainer = document.createElement("div");
-    entryContainer.classList.add("entry");
-    let entryTitle = document.createElement("h3");
-    entryTitle.classList.add("entry-title");
-    entryTitle.innerText = entry.title;
-    let entryContent = document.createElement("p");
-    entryContent.classList.add("entry-content");
-    entryContent.innerText = entry.content;
-    entryContainer.appendChild(entryTitle);
-    entryContainer.appendChild(entryContent);
+    let entryContainer = processHTMLElement("div", "entry")
+
+
+    let entryTitle = processHTMLElement("h3", "entry-title", {
+        innerText: entry.title
+    })
+
+    let entryContent = processHTMLElement("p", "entry-content", {
+        innerText: entry.content
+    })
+
+    let entryWrapper = processHTMLElement("div", "entry-wrapper")
+
+    // icons
+    let entryActions = processHTMLElement("div", "entry-actions")
+
+
+    let entryDelete = processHTMLElement("img", "entry-delete", {
+        src: "../images/trash-icon.png"
+    })
+    let entryEdit = processHTMLElement("img", "entry-edit", {
+        src: "../images/edit_icon.svg"
+    })
+
+    entryActions.appendChild(entryEdit);
+    entryActions.appendChild(entryDelete);
+
+
+    entryWrapper.appendChild(entryTitle);
+    entryWrapper.appendChild(entryContent);
+    entryContainer.appendChild(entryWrapper);
+    entryContainer.appendChild(entryActions);
     entriesContainer.appendChild(entryContainer);
 }
 
@@ -74,7 +111,7 @@ const generateEntries = () => {
     let entries = getData("entries");
     let entriesContainer = document.getElementById("entries");
 
-    if(entries) {
+    if (entries) {
         entriesContainer.innerHTML = "";
         entries.forEach((entry) => {
             processHTMLForEntry(entry, entriesContainer);
