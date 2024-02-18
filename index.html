@@ -15,18 +15,21 @@
 
     <!--  ჩანაწერის სექცია -->
     <section>
-      <div id="entries">   </div>
-        <div id="newEntryModal">
-            <button id="closeModal" onclick="closeModal()">X</button>
-          <input type="text" id="newEntryTitle" />
-          <textarea
-            id="newEntryContent"
-            name="content"
-            cols="30"
-            rows="10"
-          ></textarea>
+      <!-- entries კონტაინერი ახალი ჩანაწერებითვის -->
+      <div id="entries"></div>
 
-          <button id="submitNewEntry" onclick="submitNewEntry()"></button>
+      <!-- newEntryModal ახალი ჩანაწერების შესაქმნელად -->
+      <div id="newEntryModal">
+        <button id="closeModal" onclick="closeModal()">X</button>
+        <input type="text" id="newEntryTitle" />
+        <textarea
+          id="newEntryContent"
+          name="content"
+          cols="30"
+          rows="10"
+        ></textarea>
+
+        <button id="submitNewEntry" onclick="submitNewEntry()"></button>
       </div>
     </section>
     <script src="./js/storage.js"></script>
