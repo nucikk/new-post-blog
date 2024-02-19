@@ -25,12 +25,20 @@ const addNewEntry = () => {
     let newEntryModal = document.getElementById("newEntryModal");
     document.body.classList.add("modal-open");
     newEntryModal.style.display = "flex";
+
+    let entriesContainer = document.getElementById("entries"); 
+    submitButton.onclick = () => submitNewEntry(entriesContainer);
 }
 //^REVIEW -  popupის დახურვა 
 const closeModal = () => {
     let newEntryModal = document.getElementById("newEntryModal");
+    let newEntryTitle = document.getElementById("newEntryTitle");
+    let newEntryContent = document.getElementById("newEntryContent");
     document.body.classList.remove("modal-open");
     newEntryModal.style.display = "none";
+    newEntryTitle.value = "";
+    newEntryContent.value = "";
+    elementID.value = ""
 }
 
 const generateId = () => {
@@ -44,62 +52,7 @@ const generateId = () => {
     return 1;
 }
 
-//^REVIEW -  ახალი ჩანაწერის გაგზავნა localStorage-ში
-const submitNewEntry = () => {
-    let elementID = document.getElementById("elementID");
-    let newEntryTitle = document.getElementById("newEntryTitle");
-    let newEntryContent = document.getElementById("newEntryContent");
-    let entriesContainer = document.getElementById("entries");
-    let isUpdate = !!elementID.value;
-    let date = new Date();
 
-    let data = {
-        id: isUpdate ? elementID.value : generateId(),
-        date: (date.getTime() / 1000) + "/" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
-        title: newEntryTitle.value,
-        content: newEntryContent.value
-    }
-
-    if (elementID.value) {
-        return submitEditedEntry(data)
-    }
-
-    let entries = getData("entries") || [];
-
-    entries.push(data)
-    setData("entries", entries);
-
-    processHTMLForEntry(data, entriesContainer);
-
-    newEntryTitle.value = "";
-    newEntryContent.value = "";
-    elementID.value = ""
-
-    closeModal();
-
-}
-
-const submitEditedEntry = (data) => {
-    let entries = getData("entries");
-    let newEntries = entries.map((entry) => {
-        if (entry.id === data.id) {
-            return data;
-        }
-        return entry;
-    })
-    setData("entries", newEntries);
-    
-    let entryContainer = document.getElementById(`entry-${data.id}`);
-    let entryTitle = entryContainer.getElementsByClassName("entry-title")[0]; 
-    let entryContent = entryContainer.getElementsByClassName("entry-content")[0];
-
-    entryTitle.innerText = data.title;
-    entryContent.innerText = data.content;
-
-    let elementID = document.getElementById("elementID");
-    elementID.value = "";
-    closeModal();
-}
 
 //^ პოსტის წაშლის  ფუნქცია
 const deleteEntry = (id) => {
@@ -109,6 +62,70 @@ const deleteEntry = (id) => {
     //& იპოვოს შესაბამისი აიდის მქონე პპოსტი და წაშალოს
     let entryContainer = document.getElementById(`entry-${id}`);
     entryContainer.remove();
+}
+
+//^REVIEW -  ახალი ჩანაწერის გაგზავნა localStorage-ში
+const submitNewEntry = (entriesContainer) => {
+    let elementID = document.getElementById("elementID");
+    if (elementID.value) {
+        return submitEditedEntry(entriesContainer);
+    }
+
+    let newEntryTitle = document.getElementById("newEntryTitle");
+    let newEntryContent = document.getElementById("newEntryContent");
+
+    let date = new Date();
+    let data = {
+        id: generateId(),
+        date: (date.getTime() / 1000) + "/" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
+        title: newEntryTitle.value,
+        content: newEntryContent.value
+    }
+
+    let entries = [];
+
+    entries.push(data)
+    setData("entries", entries);
+
+    processHTMLForEntry(data, entriesContainer);
+
+    newEntryTitle.value = "";
+    newEntryContent.value = "";
+    elementID.value = ""
+    closeModal();
+}
+
+const submitEditedEntry = () => {
+    let entries = getData("entries");
+    let elementID = document.getElementById("elementID");
+    let newEntryTitle = document.getElementById("newEntryTitle");
+    let newEntryContent = document.getElementById("newEntryContent");
+
+    let data = {
+        id: parseInt(elementID.value), // Use the existing id
+        title: newEntryTitle.value,
+        content: newEntryContent.value
+    }
+
+    let newEntries = entries.map((entry) => {
+        if (entry.id === data.id) {
+            return data;
+        }
+        return entry;
+    })
+    setData("entries", newEntries);
+
+    let entryContainer = document.getElementById(`entry-${data.id}`);
+    let entryTitle = entryContainer.getElementsByClassName("entry-title")[0];
+    let entryContent = entryContainer.getElementsByClassName("entry-content")[0];
+
+    entryTitle.innerText = data.title;
+    entryContent.innerText = data.content;
+
+    newEntryTitle.value = "";
+    newEntryContent.value = "";
+    elementID.value = "";
+    closeModal();
 }
 
 //^ პოსტის ედით ფუნქცია
