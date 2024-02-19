@@ -19,6 +19,9 @@ const changeLang = () => {
 
 //^REVIEW -  popupის გახსნა 
 const addNewEntry = () => {
+    let elementID = document.getElementById("elementID");
+    let submitButton = document.getElementById("submitNewEntry");
+    submitButton.innerText = elementID.value ? langs[checkLang()].editEntry : langs[checkLang()].submitNewEntry;
     let newEntryModal = document.getElementById("newEntryModal");
     document.body.classList.add("modal-open");
     newEntryModal.style.display = "flex";
@@ -32,26 +35,33 @@ const closeModal = () => {
 
 const generateId = () => {
     let entries = getData('entries');
-    if(entries && entries.length > 0) {
-        entries =  entries.sort((a, b) => {
+    if (entries && entries.length > 0) {
+        entries = entries.sort((a, b) => {
             return a.id - b.id;
         })
         return entries[entries.length - 1].id + 1;
-    } 
+    }
     return 1;
 }
 
 //^REVIEW -  ახალი ჩანაწერის გაგზავნა localStorage-ში
 const submitNewEntry = () => {
+    let elementID = document.getElementById("elementID");
     let newEntryTitle = document.getElementById("newEntryTitle");
     let newEntryContent = document.getElementById("newEntryContent");
     let entriesContainer = document.getElementById("entries");
+    let isUpdate = !!elementID.value;
+    let date = new Date();
 
     let data = {
-        id: generateId(),
-        data: new Date().getMonth() + 1 + "/" + new Date().getDate() + "/" + new Date().getFullYear(),
+        id: isUpdate ? elementID.value : generateId(),
+        date: (date.getTime() / 1000) + "/" + date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear(),
         title: newEntryTitle.value,
         content: newEntryContent.value
+    }
+
+    if (elementID.value) {
+        return submitEditedEntry(data)
     }
 
     let entries = getData("entries") || [];
@@ -63,8 +73,32 @@ const submitNewEntry = () => {
 
     newEntryTitle.value = "";
     newEntryContent.value = "";
+    elementID.value = ""
+
     closeModal();
 
+}
+
+const submitEditedEntry = (data) => {
+    let entries = getData("entries");
+    let newEntries = entries.map((entry) => {
+        if (entry.id === data.id) {
+            return data;
+        }
+        return entry;
+    })
+    setData("entries", newEntries);
+    
+    let entryContainer = document.getElementById(`entry-${data.id}`);
+    let entryTitle = entryContainer.getElementsByClassName("entry-title")[0]; 
+    let entryContent = entryContainer.getElementsByClassName("entry-content")[0];
+
+    entryTitle.innerText = data.title;
+    entryContent.innerText = data.content;
+
+    let elementID = document.getElementById("elementID");
+    elementID.value = "";
+    closeModal();
 }
 
 //^ პოსტის წაშლის  ფუნქცია
@@ -72,13 +106,29 @@ const deleteEntry = (id) => {
     let entries = getData("entries")
     let filteredEntries = entries.filter(entry => entry.id != id);
     setData("entries", filteredEntries);
+    //& იპოვოს შესაბამისი აიდის მქონე პპოსტი და წაშალოს
     let entryContainer = document.getElementById(`entry-${id}`);
     entryContainer.remove();
 }
 
 //^ პოსტის ედით ფუნქცია
 const editEntry = (id) => {
-    
+    let entries = getData("entries");
+    if (entries) {
+        // & ჩანაწერის პოვნა აიდით
+        let entry = entries.find(entry => entry.id == id);
+        if (entry) {
+            let newEntryTitle = document.getElementById("newEntryTitle");
+            let newEntryContent = document.getElementById("newEntryContent");
+            let elementID = document.getElementById("elementID");
+
+            newEntryTitle.value = entry.title;
+            newEntryContent.value = entry.content;
+            elementID.value =id;
+            addNewEntry()
+        }
+    }
+
 }
 
 //^ ფუნქცია ელემეტების ცვალებადი, ტიპის, კლასის და ატრიბუტის დამატება
@@ -86,7 +136,7 @@ const processHTMLElement = (typeOf, className, params) => {
     let HTMLelement = document.createElement(typeOf);
     HTMLelement.classList.add(className);
     if (params) {
-        if(params.id) {
+        if (params.id) {
             HTMLelement.id = params.id;
         }
         if (params.innerText) {
@@ -94,7 +144,7 @@ const processHTMLElement = (typeOf, className, params) => {
         } else if (params.src) {
             HTMLelement.src = params.src;
         }
-        if(params.onclick) {
+        if (params.onclick) {
             HTMLelement.setAttribute("onClick", params.onclick)
         }
     }

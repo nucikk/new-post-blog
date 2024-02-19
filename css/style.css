@@ -105,6 +105,10 @@ header {
     justify-content: space-evenly;
 }
 
+#elementID {
+    display: none;
+}
+
 #newEntryContent,
 #newEntryTitle {
     border-radius: 8px;
