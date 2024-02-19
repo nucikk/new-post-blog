@@ -30,6 +30,17 @@ const closeModal = () => {
     newEntryModal.style.display = "none";
 }
 
+const generateId = () => {
+    let entries = getData('entries');
+    if(entries && entries.length > 0) {
+        entries =  entries.sort((a, b) => {
+            return a.id - b.id;
+        })
+        return entries[entries.length - 1].id + 1;
+    } 
+    return 1;
+}
+
 //^REVIEW -  ახალი ჩანაწერის გაგზავნა localStorage-ში
 const submitNewEntry = () => {
     let newEntryTitle = document.getElementById("newEntryTitle");
@@ -37,6 +48,8 @@ const submitNewEntry = () => {
     let entriesContainer = document.getElementById("entries");
 
     let data = {
+        id: generateId(),
+        data: new Date().getMonth() + 1 + "/" + new Date().getDate() + "/" + new Date().getFullYear(),
         title: newEntryTitle.value,
         content: newEntryContent.value
     }
@@ -54,15 +67,35 @@ const submitNewEntry = () => {
 
 }
 
-// ფუნქცია ელემეტების ცვალებადი, ტიპის, კლასის და ატრიბუტის დამატება
+//^ პოსტის წაშლის  ფუნქცია
+const deleteEntry = (id) => {
+    let entries = getData("entries")
+    let filteredEntries = entries.filter(entry => entry.id != id);
+    setData("entries", filteredEntries);
+    let entryContainer = document.getElementById(`entry-${id}`);
+    entryContainer.remove();
+}
+
+//^ პოსტის ედით ფუნქცია
+const editEntry = (id) => {
+    
+}
+
+//^ ფუნქცია ელემეტების ცვალებადი, ტიპის, კლასის და ატრიბუტის დამატება
 const processHTMLElement = (typeOf, className, params) => {
     let HTMLelement = document.createElement(typeOf);
     HTMLelement.classList.add(className);
     if (params) {
+        if(params.id) {
+            HTMLelement.id = params.id;
+        }
         if (params.innerText) {
             HTMLelement.innerText = params.innerText;
         } else if (params.src) {
             HTMLelement.src = params.src;
+        }
+        if(params.onclick) {
+            HTMLelement.setAttribute("onClick", params.onclick)
         }
     }
 
@@ -71,8 +104,9 @@ const processHTMLElement = (typeOf, className, params) => {
 
 //^REVIEW -  დასამუშავებელი ფუნქცია ქმნის ელემენტებს და ჩასვამს სათანადო ტექსტს
 const processHTMLForEntry = (entry, entriesContainer) => {
-    let entryContainer = processHTMLElement("div", "entry")
-
+    let entryContainer = processHTMLElement("div", "entry", {
+        id: `entry-${entry.id}`
+    })
 
     let entryTitle = processHTMLElement("h3", "entry-title", {
         innerText: entry.title
@@ -89,10 +123,12 @@ const processHTMLForEntry = (entry, entriesContainer) => {
 
 
     let entryDelete = processHTMLElement("img", "entry-delete", {
-        src: "../images/trash-icon.png"
+        src: "../images/trash-icon.png",
+        onclick: `deleteEntry(${entry.id})`
     })
     let entryEdit = processHTMLElement("img", "entry-edit", {
-        src: "../images/edit_icon.svg"
+        src: "../images/edit_icon.svg",
+        onclick: `editEntry(${entry.id})`
     })
 
     entryActions.appendChild(entryEdit);
