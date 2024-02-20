@@ -26,7 +26,7 @@ const addNewEntry = () => {
     document.body.classList.add("modal-open");
     newEntryModal.style.display = "flex";
 
-    let entriesContainer = document.getElementById("entries"); 
+    let entriesContainer = document.getElementById("entries");
     submitButton.onclick = () => submitNewEntry(entriesContainer);
 }
 //^REVIEW -  popupის დახურვა 
@@ -141,7 +141,7 @@ const editEntry = (id) => {
 
             newEntryTitle.value = entry.title;
             newEntryContent.value = entry.content;
-            elementID.value =id;
+            elementID.value = id;
             addNewEntry()
         }
     }
@@ -245,4 +245,31 @@ const general = () => {
     generateEntries();
 }
 
-general(); 
+general();
+
+
+async function getDataTest() {
+    let powerteg = document.getElementById("usercontent");
+
+    let loadingMessage = document.createElement("h2");
+    loadingMessage.innerText = "Loading...";
+    powerteg.appendChild(loadingMessage);
+
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+    powerteg.removeChild(loadingMessage);
+
+    if (data && data.length > 0) {
+        for (let i = 0; i < data.length; i++) {
+            let postName = document.createElement("h4");
+            let postAbout= document.createElement("p");
+            postName.innerText = data[i].title;
+            postAbout.innerText = data[i].body;
+            powerteg.appendChild(postName);
+            powerteg.appendChild(postAbout);
+        }
+    } 
+
+}
+
+getDataTest();

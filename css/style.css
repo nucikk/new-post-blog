@@ -51,7 +51,7 @@ header {
 
 }
 
-.entry-title {
+.entry-title,#usercontent h2 {
     color: darkorange;
     font-variant: small-caps;
     font-style: oblique;
@@ -140,4 +140,20 @@ header {
     font-size: 30px;
     background-color: transparent;
     border: none;
+}
+
+#usercontent {
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 2px solid #ce9ff7;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#usercontent p {
+    font-size: 10px;
+}
+#usercontent h4 {
+    font-size: 16px;
+    color: darkcyan;
 }
